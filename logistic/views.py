@@ -1,5 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
 
 from logistic.models import Product, Stock
@@ -11,6 +12,8 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['title', 'description']
+    pagination_class = PageNumberPagination
+    pagination_class.page_size = 5
 
 
 class StockViewSet(ModelViewSet):
@@ -20,3 +23,5 @@ class StockViewSet(ModelViewSet):
     filterset_fields = ['products']
     # поиск по названию продукта
     search_fields = ['products__title', 'products__description']
+    pagination_class = PageNumberPagination
+    pagination_class.page_size = 5

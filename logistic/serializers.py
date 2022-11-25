@@ -42,7 +42,11 @@ class StockSerializer(serializers.ModelSerializer):
         stock = super().update(instance, validated_data)
 
         # здесь вам надо обновить связанные таблицы
+
+        # 1. полностью удаляем существующие связи
+        StockProduct.objects.filter(stock=stock).delete()
+        # 2. добавление новых записей
         for position in positions:
-            StockProduct.objects.filter(stock=stock).filter(product=position['product']).update(**position)
+            StockProduct.objects.create(stock=stock, **position)
 
         return stock
